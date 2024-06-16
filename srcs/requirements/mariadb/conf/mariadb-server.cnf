@@ -1,0 +1,16 @@
+# This group is read by the server
+[mysqld]
+pid-file = /var/run/mysqld/mysqld.pid
+skip-host-cache
+skip-name-resolve
+bind-address=0.0.0.0
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+
+# this is read by the standalone daemon and embedded servers
+[server]
+
+# this is only for the mysqld standalone daemon
+[mysqld]
+skip-networking=0
