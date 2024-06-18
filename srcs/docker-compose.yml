@@ -12,7 +12,7 @@ services:
     networks:
       - inception
     volumes:
-      - wp-volume:/var/www/
+      - wp-volume:/var/www/wordpress
     restart: always
 
   mariadb:
@@ -21,18 +21,13 @@ services:
     build:
       context: requirements/mariadb
       dockerfile: Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-        DB_ROOT_PASS: ${DB_ROOT_PASS}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 1s
       timeout: 1s
       retries: 5
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
     networks:
       - inception
     volumes:
@@ -45,19 +40,15 @@ services:
     build:
       context: requirements/wordpress
       dockerfile: Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
     depends_on:
       mariadb:
         condition: service_healthy
-    ports:
+    expose:
       - "9000"
     networks:
       - inception
     volumes:
-      - wp-volume:/var/www/
+      - wp-volume:/var/www/wordpress
     restart: always
 
 volumes:
@@ -65,13 +56,13 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: ~/data/wordpress
+      device: /root/data/wordpress
 
   db-volume:
     driver_opts:
       o: bind
       type: none
-      device: ~/data/mariadb
+      device: /root/data/mariadb
 
 networks:
   inception:

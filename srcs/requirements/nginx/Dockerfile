@@ -6,6 +6,6 @@ RUN mkdir -p /etc/nginx/ssl && openssl req -x509 -nodes -out /etc/nginx/ssl/mdje
 
 COPY conf/nginx.conf /etc/nginx/http.d/mdjemaa.conf
 
-RUN chown root /var/www/; chmod -R 755 /var/www/
+#RUN chown root /var/www/; chmod -R 755 /var/www/
 
 CMD [ "nginx", "-g", "daemon off;" ]

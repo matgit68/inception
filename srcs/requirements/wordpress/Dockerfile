@@ -1,9 +1,5 @@
 FROM alpine:3.19
 
-ARG DB_NAME \
-    DB_USER \
-    DB_PASS
-
 RUN apk update && apk upgrade && apk add php82 php82-fpm php82-mysqli php82-iconv php82-phar wget unzip
 
 COPY ./conf/www.conf /etc/php82/php-fpm.d/
