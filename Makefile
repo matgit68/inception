@@ -1,17 +1,21 @@
-all: dir up
+all: init pass up
 
-dir:
+init:
 	@mkdir -p ~/data ~/data/mariadb ~/data/wordpress
-
-pass:
-	@openssl rand -base64 12 > secrets/DB_ROOT_PASS.txt
-	@openssl rand -base64 12 > secrets/DB_PASS.txt
-	@echo "Create wordpress admin pass :"
-	@./pass.sh > secrets/WP_APASS.txt;
-	@chmod 600 secrets/WP_APASS.txt
-	@echo "Create wordpress user pass :"
-	@./pass.sh > secrets/WP_UPASS.txt;
-	@chmod 600 secrets/WP_UPASS.txt
+	@if [ ! -e secrets/.EVIDENCE ]; then \
+		srcs/requirements/tools/pass.sh secrets/DB_ROOT_PASS.txt --auto; \
+		chmod 600 secrets/DB_ROOT_PASS.txt; \
+		srcs/requirements/tools/pass.sh secrets/DB_PASS.txt --auto; \
+		chmod 600 secrets/DB_PASS.txt; \
+		echo "Create wordpress admin pass :"; \
+		srcs/requirements/tools/pass.sh secrets/WP_APASS.txt; \
+		chmod 600 secrets/WP_APASS.txt; \
+		echo "Create wordpress user pass :"; \
+		srcs/requirements/tools/pass.sh secrets/WP_UPASS.txt; \
+		chmod 600 secrets/WP_UPASS.txt; \
+		touch secrets/.EVIDENCE; \
+		chmod 600 secrets/.EVIDENCE; \
+	fi
 
 up:
 	@docker compose -f srcs/docker-compose.yml up --build
@@ -19,7 +23,7 @@ up:
 down:
 	@docker compose -f srcs/docker-compose.yml down
 
-re: down fclean dir up
+re: down fclean all
 
 fclean:
 	@docker system prune -a -f

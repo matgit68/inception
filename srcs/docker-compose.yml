@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   nginx:
     container_name: nginx
@@ -18,9 +20,17 @@ services:
   mariadb:
     container_name: mariadb
     env_file: .env
+    secrets:
+      - DB_ROOT_PASS
+      - DB_PASS
     build:
       context: requirements/mariadb
       dockerfile: Dockerfile
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: /run/secrets/DB_PASS
+        DB_ROOT_PASS: /run/secrets/DB_ROOT_PASS
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 1s
@@ -37,6 +47,15 @@ services:
   wordpress:
     container_name: wordpress
     env_file: .env
+    secrets:
+      - WP_APASS
+      - WP_UPASS
+      - DB_PASS
+    # args:
+    #   DB_NAME: ${DB_NAME}
+    #   DB_USER: ${DB_USER}
+    #   DB_PASS: ${DB_PASS}
+    #   DB_ROOT_PASS: ${DB_ROOT_PASS}
     build:
       context: requirements/wordpress
       dockerfile: Dockerfile
@@ -67,3 +86,13 @@ volumes:
 networks:
   inception:
       driver: bridge
+
+secrets:
+  DB_ROOT_PASS:
+    file: ../secrets/DB_ROOT_PASS.txt
+  DB_PASS:
+    file: ../secrets/DB_PASS.txt
+  WP_APASS:
+    file: ../secrets/WP_APASS.txt
+  WP_UPASS:
+    file: ../secrets/WP_UPASS.txt
