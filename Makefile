@@ -27,5 +27,5 @@ re: down fclean all
 
 fclean:
 	@docker system prune -a -f
-	@rm -rf ~/data
-	@rm -rf ~/secrets/*
+	@sudo rm -rf ~/data
+	@sudo rm -rf ~/secrets/*
