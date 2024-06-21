@@ -44,11 +44,6 @@ services:
       - WP_APASS
       - WP_UPASS
       - DB_PASS
-    # args:
-    #   DB_NAME: ${DB_NAME}
-    #   DB_USER: ${DB_USER}
-    #   DB_PASS: ${DB_PASS}
-    #   DB_ROOT_PASS: ${DB_ROOT_PASS}
     build:
       context: requirements/wordpress
       dockerfile: Dockerfile

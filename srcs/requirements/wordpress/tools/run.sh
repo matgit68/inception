@@ -3,6 +3,9 @@
 echo coucou > /var/www/wordpress/index.html
 
 if [ ! -f /var/www/wordpress/wp-config.php ]; then
+	DB_PASS=$(cat /run/secrets/DB_PASS)
+	WP_APASS=$(cat /run/secrets/WP_APASS)
+	WP_UPASS=$(cat /run/secrets/WP_UPASS)
 	chmod -R 755 /var/www/wordpress/
 	cd /var/www/wordpress
 	wp core config --allow-root --dbname=$DB_NAME --dbpass=$DB_PASS --dbuser=$DB_USER --dbhost=mariadb:3306
