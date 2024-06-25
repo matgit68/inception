@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # This script allows you to generate and store a password automatically or
 # read user input and store it in a file, depending on the arguments provided.
 # arguments MUST be in that order : $1 file $2. option
