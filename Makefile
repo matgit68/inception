@@ -1,7 +1,7 @@
 all: init up
 
 init:
-	@mkdir -p ~/data ~/data/mariadb ~/data/wordpress
+	@mkdir -p ~/data ~/data/mariadb ~/data/wordpress ./secrets
 	@if [ ! -e secrets/DB_PASS.txt ]; then \
 		./srcs/requirements/tools/pass.sh ./secrets/DB_PASS.txt --auto; \
 	fi
